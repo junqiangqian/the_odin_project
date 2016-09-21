@@ -1,10 +1,24 @@
 rows = 32;
 cols = 32;
 
+mode = handleDefaultMode;
+
 $(document).ready(function() {
-    handleClearGrid();
+    $('#cleargrid').click(handleClearGrid);
+    $('#default').click(function() {
+        mode = handleDefaultMode;
+        handleChangeMode();
+    });
+    $('#randomcolour').click(function() {
+        mode = handleRandomColourMode;
+        handleChangeMode();
+    });
     makeGrid(rows, cols);
 });
+
+function handleChangeMode() {
+    $('.square').hover(mode);
+}
 
 function makeGrid(rows, cols) {
     for (var i = 0; i < rows; i++) {
@@ -18,25 +32,35 @@ function makeGrid(rows, cols) {
     var gridHeight = $('#grid').height();
 
     var squares = $('.square');
-    var sideWidth = (gridWidth / rows) -
-                                 2 * parseInt(squares.css("border-left-width"));
-    var sideHeight = (gridHeight / cols) -
-                                 2 * parseInt(squares.css('border-left-width'));
+    var borderOffset = 2 * parseInt(squares.css("border-left-width"));
+    var sideWidth = (gridWidth / rows) - borderOffset;
+    var sideHeight = (gridHeight / cols) - borderOffset;
     squares.width(sideWidth);
     squares.height(sideHeight);
-
-    squares.hover(function() {
-        $(this).addClass("black");
-    });
+    handleChangeMode();
 }
 
 function handleClearGrid() {
-    $('#cleargrid').click(function(event) {
-        event.preventDefault();
-        $('.square').removeClass('black');
-        cols = parseInt(prompt("Enter number of rows"));
-        rows = parseInt(prompt("Enter number of columns"));
-        $('#grid').empty();
-        makeGrid(rows, cols);
-    });
+    $('.square').css('background', 'transparent');
+    cols = parseInt(prompt("Enter number of rows"));
+    rows = parseInt(prompt("Enter number of columns"));
+    $('#grid').empty();
+    makeGrid(rows, cols);
+}
+
+function handleDefaultMode() {
+    $(this).css('background', 'black');
+}
+
+function getRandomColour() {
+    var letters = '0123456789ABCDEF';
+    var colour = '#';
+    for (var i = 0; i < 6; i++ ) {
+        colour += letters[Math.floor(Math.random() * 16)];
+    }
+    return colour;
+}
+
+function handleRandomColourMode() {
+    $(this).css('background', getRandomColour());
 }
