@@ -5,10 +5,16 @@ $(document).ready(function() {
     var gridHeight = $('#grid').height();
     makeGrid(rows, cols);
     var squares = $('.square');
-    var sideLength = (gridWidth / cols) -
+    var sideWidth = (gridWidth / rows) -
                                  2 * parseInt(squares.css("border-left-width"));
-    $('.square').width(sideLength);
-    $('.square').height(sideLength);
+    var sideHeight = (gridHeight / cols) -
+                                 2 * parseInt(squares.css('border-left-width'));
+    squares.width(sideWidth);
+    squares.height(sideHeight);
+
+    squares.on('mouseenter', function() {
+        $(this).addClass("black");
+    });
 
 });
 
