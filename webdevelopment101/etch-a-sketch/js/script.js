@@ -1,21 +1,9 @@
+rows = 32;
+cols = 32;
+
 $(document).ready(function() {
-    var rows = 16;
-    var cols = 16;
-    var gridWidth = $('#grid').width();
-    var gridHeight = $('#grid').height();
+    handleClearGrid();
     makeGrid(rows, cols);
-    var squares = $('.square');
-    var sideWidth = (gridWidth / rows) -
-                                 2 * parseInt(squares.css("border-left-width"));
-    var sideHeight = (gridHeight / cols) -
-                                 2 * parseInt(squares.css('border-left-width'));
-    squares.width(sideWidth);
-    squares.height(sideHeight);
-
-    squares.on('mouseenter', function() {
-        $(this).addClass("black");
-    });
-
 });
 
 function makeGrid(rows, cols) {
@@ -26,4 +14,29 @@ function makeGrid(rows, cols) {
         }
         $('#grid').append(row);
     }
+    var gridWidth = $('#grid').width();
+    var gridHeight = $('#grid').height();
+
+    var squares = $('.square');
+    var sideWidth = (gridWidth / rows) -
+                                 2 * parseInt(squares.css("border-left-width"));
+    var sideHeight = (gridHeight / cols) -
+                                 2 * parseInt(squares.css('border-left-width'));
+    squares.width(sideWidth);
+    squares.height(sideHeight);
+
+    squares.hover(function() {
+        $(this).addClass("black");
+    });
+}
+
+function handleClearGrid() {
+    $('#cleargrid').click(function(event) {
+        event.preventDefault();
+        $('.square').removeClass('black');
+        cols = parseInt(prompt("Enter number of rows"));
+        rows = parseInt(prompt("Enter number of columns"));
+        $('#grid').empty();
+        makeGrid(rows, cols);
+    });
 }
