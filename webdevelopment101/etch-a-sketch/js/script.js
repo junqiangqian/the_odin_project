@@ -32,18 +32,19 @@ $(document).ready(function() {
         var squares = $('.square');
         var gridWidth = $('#grid').width();
         var gridHeight = $('#grid').height();
-        var borderOffset = 0;
-        var sideWidth = (gridWidth / rows) - borderOffset;
-        var sideHeight = (gridHeight / cols) - borderOffset;
-        squares.width(sideWidth);
-        squares.height(sideHeight);
+        squares.width(gridWidth / rows);
+        squares.height(gridWidth / cols);
         handleChangeMode(handleDefaultMode);
     }
 
     function handleClearGrid() {
         $('.square').css('background', 'transparent');
-        cols = parseInt(prompt("Enter number of rows"));
-        rows = parseInt(prompt("Enter number of columns"));
+        var cols = parseInt(prompt("Enter number of rows"));
+        var rows = parseInt(prompt("Enter number of columns"));
+        if (isNaN(cols) || isNaN(rows)) {
+            rows = 32;
+            cols = 32;
+        }
         $('#grid').empty();
         makeGrid(rows, cols);
     }
@@ -75,7 +76,7 @@ $(document).ready(function() {
 
     function getDarkerShade(cArray) {
         var nArray = [];
-        cArray.forEach(function(element, index, array) {
+        cArray.forEach(function(element, index) {
             var nElement = parseInt(element);
             nElement = Math.max(0, nElement - 25);
             nArray.push(nElement);
