@@ -1,6 +1,5 @@
 rows = 32;
 cols = 32;
-
 mode = handleDefaultMode;
 
 $(document).ready(function() {
@@ -13,11 +12,15 @@ $(document).ready(function() {
         mode = handleRandomColourMode;
         handleChangeMode();
     });
+    $('#opacity').click(function() {
+        mode = handleOpacityMode;
+        handleChangeMode();
+    });
     makeGrid(rows, cols);
 });
 
 function handleChangeMode() {
-    $('.square').hover(mode);
+    $('.square').on('mouseenter', mode);
 }
 
 function makeGrid(rows, cols) {
@@ -28,10 +31,9 @@ function makeGrid(rows, cols) {
         }
         $('#grid').append(row);
     }
+    var squares = $('.square');
     var gridWidth = $('#grid').width();
     var gridHeight = $('#grid').height();
-
-    var squares = $('.square');
     var borderOffset = 2 * parseInt(squares.css("border-left-width"));
     var sideWidth = (gridWidth / rows) - borderOffset;
     var sideHeight = (gridHeight / cols) - borderOffset;
@@ -49,13 +51,13 @@ function handleClearGrid() {
 }
 
 function handleDefaultMode() {
-    $(this).css('background', 'black');
+    $(this).css('background', 'white');
 }
 
 function getRandomColour() {
     var letters = '0123456789ABCDEF';
     var colour = '#';
-    for (var i = 0; i < 6; i++ ) {
+    for (var i = 0; i < 6; i++) {
         colour += letters[Math.floor(Math.random() * 16)];
     }
     return colour;
@@ -63,4 +65,23 @@ function getRandomColour() {
 
 function handleRandomColourMode() {
     $(this).css('background', getRandomColour());
+}
+
+function handleOpacityMode() {
+    console.log("before" + $(this).css('background-color'));
+    var cArray = $(this).css("background-color").match(/\d+/g);
+    var nArray = getDarkerShade(cArray);
+    $(this).css(
+        'background', 'rgb(' + nArray[0] + ',' + nArray[1] + ',' + nArray[2] + ')');
+    console.log("after " + $(this).css('background-color'));
+}
+
+function getDarkerShade(cArray) {
+    var nArray = [];
+    cArray.forEach(function(element, index, array) {
+        var nElement = parseInt(element);
+        nElement = Math.max(0, nElement - 25);
+        nArray.push(nElement);
+    });
+    return nArray;
 }

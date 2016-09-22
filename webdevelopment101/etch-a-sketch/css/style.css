@@ -4,6 +4,10 @@
     height: 600px;
 }
 
+h1, #buttonGroup {
+    text-align: center;
+}
+
 #grid {
     height: 600px;
     width: 600px;
