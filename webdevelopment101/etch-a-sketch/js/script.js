@@ -1,25 +1,19 @@
-rows = 32;
-cols = 32;
-mode = handleDefaultMode;
-
 $(document).ready(function() {
     $('#cleargrid').click(handleClearGrid);
     $('#default').click(function() {
-        mode = handleDefaultMode;
-        handleChangeMode();
+        handleChangeMode(handleDefaultMode);
     });
     $('#randomcolour').click(function() {
-        mode = handleRandomColourMode;
-        handleChangeMode();
+        handleChangeMode(handleRandomColourMode);
     });
     $('#opacity').click(function() {
-        mode = handleOpacityMode;
-        handleChangeMode();
+        handleChangeMode(handleOpacityMode);
     });
-    makeGrid(rows, cols);
+    makeGrid(32, 32);
 });
 
-function handleChangeMode() {
+function handleChangeMode(mode) {
+    $('.square').off('mouseenter');
     $('.square').on('mouseenter', mode);
 }
 
@@ -39,7 +33,7 @@ function makeGrid(rows, cols) {
     var sideHeight = (gridHeight / cols) - borderOffset;
     squares.width(sideWidth);
     squares.height(sideHeight);
-    handleChangeMode();
+    handleChangeMode(handleDefaultMode);
 }
 
 function handleClearGrid() {
@@ -51,7 +45,7 @@ function handleClearGrid() {
 }
 
 function handleDefaultMode() {
-    $(this).css('background', 'white');
+    $(this).css('background', 'black');
 }
 
 function getRandomColour() {
@@ -68,12 +62,10 @@ function handleRandomColourMode() {
 }
 
 function handleOpacityMode() {
-    console.log("before" + $(this).css('background-color'));
     var cArray = $(this).css("background-color").match(/\d+/g);
     var nArray = getDarkerShade(cArray);
-    $(this).css(
-        'background', 'rgb(' + nArray[0] + ',' + nArray[1] + ',' + nArray[2] + ')');
-    console.log("after " + $(this).css('background-color'));
+    $(this).css('background',
+                'rgb(' + nArray[0] + ',' + nArray[1] + ',' + nArray[2] + ')');
 }
 
 function getDarkerShade(cArray) {
